@@ -1,6 +1,6 @@
 <template>
-  <div class="container mx-auto grid gap-10 w-[800px] px-6 pb-10">
-    <plan-form-header v-if="state.selected" />
+  <div v-if="state.selected" class="container mx-auto grid gap-10 w-[800px] px-6 pb-10">
+    <plan-form-header />
     <div>
       <section class="grid gap-10">
         <h1 class="text-black font-bold text-3xl">Customize Your Plan</h1>

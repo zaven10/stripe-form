@@ -3,6 +3,7 @@ import { computed, watch, type ComputedRef } from 'vue'
 import { usePlans } from '@/composables'
 
 import type { IAdditionContact, IAddOnsService, IPlan } from '@/interfaces'
+
 import { PriceId } from '@/enums'
 
 export const useHomeView = () => {
