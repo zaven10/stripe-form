@@ -79,8 +79,12 @@ export const useHomeView = () => {
   }
 
   watch(
-    () => state.selected!,
-    (value: IPlan) => {
+    () => state.selected,
+    (value: IPlan | null) => {
+      if (!value) {
+        return
+      }
+
       const addOnsData = getAddOnesData(value)
       const additionalContactsData = getAdditionalContactData(value)
 

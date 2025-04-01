@@ -26,6 +26,12 @@ export const usePlans = () => {
     }
   }
 
+  const removeSelectedPlan = () => {
+    state.selected = null
+
+    state.data.forEach((item) => (item.isSelected = false))
+  }
+
   const setAdditionContact = (value: IAdditionContact | undefined) => {
     if (!value) {
       return (state.selected!.additionContacts = undefined)
@@ -37,6 +43,7 @@ export const usePlans = () => {
   return {
     state,
     setAddOnsData,
+    removeSelectedPlan,
     setData,
     setSelectedPlan,
     setAdditionalContacts,
