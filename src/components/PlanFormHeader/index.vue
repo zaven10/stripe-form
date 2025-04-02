@@ -1,7 +1,7 @@
 <template>
   <div class="grid gap-5">
     <div class="flex items-center justify-between">
-      <h1 class="text-4xl font-bold text-[#1d49a6]">Selected Plan:</h1>
+      <h1 class="text-4xl font-bold text-[#1d49a6]">Your Selected Plan:</h1>
       <button
         class="flex items-center gap-2 py-1.5 px-3 bg-[#1d49a6] rounded-full text-white hover:bg-[#1d49a6]/80 cursor-pointer transition-all"
         @click="removeSelectedPlan"

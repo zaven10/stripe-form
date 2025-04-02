@@ -5,7 +5,7 @@
       <section class="grid gap-10">
         <h1 class="text-black font-bold text-3xl">Customize Your Plan</h1>
         <div class="grid gap-3">
-          <h2 class="font-semibold text-lg">Additional Contacts (Optional)</h2>
+          <h2 class="font-semibold text-lg">Add More Contacts (Optional)</h2>
           <app-select v-model="state.selected.additionContacts" :items="state.additionalContacts" />
         </div>
         <div v-if="state.addOns.length" class="grid gap-3">
@@ -28,12 +28,14 @@
               <span>Selected Plan:</span>
               <span class="font-semibold" v-text="state.selected.title" />
             </div>
-            <div v-if="state.selected.additionContacts" class="flex justify-between items-center">
+            <div v-if="state.selected.additionContacts" class="grid gap-2">
               <span>Additional Contacts:</span>
-              <span class="font-semibold flex items-center gap-1">
-                <span v-html="state.selected.additionContacts?.text || '&mdash;'" />
-                <span>contacts</span>
-              </span>
+              <ul class="pl-6 grid gap-1">
+                <li class="flex items-center justify-between text-sm">
+                  <span v-text="additionalContactsData.title" />
+                  <span class="font-semibold">${{ additionalContactsData.price }}/mo</span>
+                </li>
+              </ul>
             </div>
             <div v-if="state.selected.addOns?.length" class="grid gap-2">
               <span>Add-ons:</span>
@@ -74,5 +76,5 @@ import PlanFormHeader from '../../components/PlanFormHeader/index.vue'
 
 import { usePlanFormComponent } from './index.script'
 
-const { state, totalAmount, onAddOnsUpdateHandler } = usePlanFormComponent()
+const { state, totalAmount, onAddOnsUpdateHandler, additionalContactsData } = usePlanFormComponent()
 </script>

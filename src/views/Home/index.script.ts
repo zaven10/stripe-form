@@ -67,14 +67,26 @@ export const useHomeView = () => {
     const data: IAdditionContact[] = []
 
     if (value.priceId === PriceId.NEWS_LETTER) {
-      data.push({ text: '501 - 2,500', value: 15, priceId: PriceId.CONTACTS_501_2500 })
+      data.push({
+        text: '501-2,500 contacts (+$15/month)',
+        value: 15,
+        priceId: PriceId.CONTACTS_501_2500,
+      })
     }
 
     if (value.priceId !== PriceId.PREMIUM) {
-      data.push({ text: '2,501-5,000', value: 25, priceId: PriceId.CONTACTS_2501_5000 })
+      data.push({
+        text: '2,501-5,000 contacts (+$25/month)',
+        value: 25,
+        priceId: PriceId.CONTACTS_2501_5000,
+      })
     }
 
-    data.push({ text: '5,001-10,000', value: 45, priceId: PriceId.CONTACTS_5001_10000 })
+    data.push({
+      text: '5,001-10,000 contacts (+$45/month)',
+      value: 45,
+      priceId: PriceId.CONTACTS_5001_10000,
+    })
 
     return data
   }

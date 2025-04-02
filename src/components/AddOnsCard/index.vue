@@ -2,7 +2,7 @@
   <div
     :class="[
       'rounded-xl border border-[#cecfd3] px-4 py-5 flex items-center bg-white transition-all',
-      { '!bg-[#f6f8fe] !border-[#9bbffa]': isMarked },
+      { '!bg-[#f6f8fe] !border-[#1d49a6]': isMarked },
     ]"
   >
     <div class="font-semibold grow" v-text="title" />
@@ -14,7 +14,7 @@
           :class="[
             'relative w-11 h-6 bg-gray-200 rounded-full after:content-[\'\'] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all',
             {
-              'after:translate-x-full after:border-white !bg-[#357ff7]': isMarked,
+              'after:translate-x-full after:border-white !bg-[#1d49a6]': isMarked,
             },
           ]"
         />
