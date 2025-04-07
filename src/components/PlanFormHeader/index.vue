@@ -1,19 +1,19 @@
 <template>
   <div class="grid gap-5">
-    <div class="flex items-center justify-between">
-      <h1 class="text-4xl font-bold text-[#1d49a6]">Your Selected Plan:</h1>
+    <div class="flex items-center justify-between gap-2">
+      <h1 class="text-xl sm:text-3xl lg:text-4xl font-bold text-[#1d49a6]">Your Selected Plan:</h1>
       <button
-        class="flex items-center gap-2 py-1.5 px-3 bg-[#1d49a6] rounded-full text-white hover:bg-[#1d49a6]/80 cursor-pointer transition-all"
+        class="flex items-center py-1.5 px-3 bg-[#1d49a6] rounded-full text-white hover:bg-[#1d49a6]/80 cursor-pointer transition-all"
         @click="removeSelectedPlan"
       >
-        <span class="font-semibold text-sm">Choose a Different Plan</span>
+        <span class="font-semibold text-[10px] sm:text-sm">Choose a Different Plan</span>
       </button>
     </div>
     <div class="grid gap-1.5 justify-items-start">
       <div class="inline-flex items-center gap-3 bg-[#f1f1f1] py-0.5 px-5">
         <span class="font-bold text-lg text-black" v-text="state.selected?.title" />
         <span class="flex items-baseline gap-1">
-          <h3 class="font-bold text-2xl text-black">${{ state.selected?.price }}</h3>
+          <h3 class="font-bold text-xl lg:text-2xl text-black">${{ state.selected?.price }}</h3>
           <span class="text-[#6b7588] text-sm">/month</span>
         </span>
       </div>
@@ -23,7 +23,7 @@
           :key="item"
           class="ml-3 bg-[#f1f1f1] py-0.5 pl-3 pr-10 inline-flex"
         >
-          <span v-text="item" class="text-[#6b7588] font-semibold text-[15px]"></span>
+          <span v-text="item" class="text-[#6b7588] font-semibold text-xs sm:text-[15px]"></span>
         </div>
       </template>
     </div>

@@ -1,9 +1,9 @@
 <template>
-  <main class="min-h-screen py-10 px-3 bg-[#f8fafc] grid place-items-center gap-20">
-    <div class="container mx-auto grid w-[1100px]">
-      <div class="grid gap-16 place-items-center">
+  <main class="min-h-screen lg:py-10 p-5 bg-[#f8fafc] grid place-items-center gap-20">
+    <div class="container mx-auto grid max-w-[1100px]">
+      <div class="grid gap-7 lg:gap-16 place-items-center">
         <the-header v-if="!state.selected" />
-        <section v-if="!state.selected" class="grid grid-cols-3 gap-6">
+        <section v-if="!state.selected" class="grid lg:grid-cols-3 gap-6">
           <plan-card
             v-for="item in state.data"
             :key="item.priceId"

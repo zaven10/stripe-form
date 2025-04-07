@@ -4,16 +4,24 @@ import { usePlans } from '@/composables'
 
 import type { IAdditionContact, IAddOnsService, IPlan } from '@/interfaces'
 
-import { PriceId } from '@/enums'
+import { BillingOptions, PriceId } from '@/enums'
 
 export const useHomeView = () => {
-  const { state, setData, setSelectedPlan, setAddOnsData, setAdditionalContacts } = usePlans()
+  const {
+    state,
+    setData,
+    setSelectedPlan,
+    setAddOnsData,
+    setAdditionalContacts,
+    setBillingOptions,
+  } = usePlans()
 
   setData([
     {
       title: 'Newsletter Package',
       price: 55,
       addOns: [],
+      billingOption: BillingOptions.MONTHLY,
       priceId: PriceId.NEWS_LETTER,
       additionContacts: undefined,
       includes: ['Email Newsletter (Up to 500 contacts)'],
@@ -22,6 +30,7 @@ export const useHomeView = () => {
       title: 'Professional Plan',
       price: 85,
       isPopular: true,
+      billingOption: BillingOptions.MONTHLY,
       priceId: PriceId.PROFESSIONAL,
       addOns: [],
       additionContacts: undefined,
@@ -30,6 +39,7 @@ export const useHomeView = () => {
     {
       title: 'Premium Plan',
       price: 125,
+      billingOption: BillingOptions.MONTHLY,
       priceId: PriceId.PREMIUM,
       addOns: [],
       additionContacts: undefined,
@@ -103,6 +113,16 @@ export const useHomeView = () => {
 
       setAddOnsData(addOnsData)
       setAdditionalContacts(additionalContactsData)
+      setBillingOptions([
+        {
+          label: 'Monthly',
+          value: BillingOptions.MONTHLY,
+        },
+        {
+          label: 'Yearly',
+          value: BillingOptions.YEARLY,
+        },
+      ])
     },
   )
 

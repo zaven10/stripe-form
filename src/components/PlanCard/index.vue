@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'bg-white p-6 rounded-2xl shadow-xl min-h-[500px] border-2 border-transparent relative hover:border-[#1d49a6] transition-all select-none',
+      'bg-white p-6 rounded-2xl shadow-xl lg:min-h-[500px] border-2 border-transparent relative hover:border-[#1d49a6] transition-all select-none',
       { '!border-[#1d49a6] !bg-[#f6f8fe]': isSelected },
     ]"
   >
