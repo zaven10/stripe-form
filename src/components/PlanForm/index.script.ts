@@ -4,8 +4,14 @@ import { usePlans } from '@/composables'
 
 import type { IAddOnsService } from '@/interfaces'
 
+import { BillingOptions } from '@/enums'
+
 export const usePlanFormComponent = () => {
   const { state } = usePlans()
+
+  const isMonthly = computed(() => state.selected?.billingOption === BillingOptions.MONTHLY)
+
+  const billingPostfix = computed(() => (isMonthly.value ? 'mo' : 'yr'))
 
   const onAddOnsUpdateHandler = (value: boolean, item: IAddOnsService) => {
     if (!value || !item) {
@@ -32,7 +38,7 @@ export const usePlanFormComponent = () => {
       sum += state.selected.additionContacts.value
     }
 
-    return `$${sum}/month`
+    return `$${sum}/${isMonthly.value ? 'month' : 'year (save 10%)'}`
   })
 
   const additionalContactsData = computed(() => {
@@ -46,6 +52,7 @@ export const usePlanFormComponent = () => {
 
   return {
     state,
+    billingPostfix,
     additionalContactsData,
     totalAmount,
     onAddOnsUpdateHandler,

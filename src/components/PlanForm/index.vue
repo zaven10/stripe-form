@@ -42,7 +42,9 @@
               <ul class="pl-6 grid gap-1">
                 <li class="flex items-center justify-between text-sm">
                   <span v-text="additionalContactsData.title" />
-                  <span class="font-semibold">${{ additionalContactsData.price }}/mo</span>
+                  <span class="font-semibold"
+                    >${{ additionalContactsData.price }}/{{ billingPostfix }}</span
+                  >
                 </li>
               </ul>
             </div>
@@ -55,7 +57,7 @@
                   class="flex items-center justify-between text-sm"
                 >
                   <span v-text="item.title" />
-                  <span class="font-semibold">${{ item.price }}/mo</span>
+                  <span class="font-semibold">${{ item.price }}/{{ billingPostfix }}</span>
                 </li>
               </ul>
             </div>
@@ -86,5 +88,6 @@ import PlanFormHeader from '../../components/PlanFormHeader/index.vue'
 
 import { usePlanFormComponent } from './index.script'
 
-const { state, totalAmount, onAddOnsUpdateHandler, additionalContactsData } = usePlanFormComponent()
+const { state, totalAmount, onAddOnsUpdateHandler, additionalContactsData, billingPostfix } =
+  usePlanFormComponent()
 </script>

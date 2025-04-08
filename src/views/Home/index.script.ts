@@ -1,4 +1,4 @@
-import { computed, watch, type ComputedRef } from 'vue'
+import { watch } from 'vue'
 
 import { usePlans } from '@/composables'
 
@@ -6,15 +6,10 @@ import type { IAdditionContact, IAddOnsService, IPlan } from '@/interfaces'
 
 import { BillingOptions, PriceId } from '@/enums'
 
+import { $getPriceMonthlyOrYearly } from '@/utils'
+
 export const useHomeView = () => {
-  const {
-    state,
-    setData,
-    setSelectedPlan,
-    setAddOnsData,
-    setAdditionalContacts,
-    setBillingOptions,
-  } = usePlans()
+  const { state, setData, setSelectedPlan, setAddOnsData, setAdditionalContacts } = usePlans()
 
   setData([
     {
@@ -51,80 +46,96 @@ export const useHomeView = () => {
     },
   ])
 
-  const getAddOnesData = (value: IPlan) => {
+  const getAddOnesData = (value: IPlan, isMonthly: boolean) => {
     const data: IAddOnsService[] = []
+
+    const percent = isMonthly ? 0 : 10
 
     if (value.priceId === PriceId.NEWS_LETTER) {
       data.push({
         title: 'Weekly Social Media Reports',
-        price: 30,
-        priceId: PriceId.WEEKLY_SOCIAL_MEDIA_REPORTS,
+        price: $getPriceMonthlyOrYearly(30, percent),
+        priceId: isMonthly
+          ? PriceId.WEEKLY_SOCIAL_MEDIA_REPORTS_MONTHLY
+          : PriceId.WEEKLY_SOCIAL_MEDIA_REPORTS_YEARLY,
       })
     }
 
     if (value.priceId !== PriceId.PREMIUM) {
       data.push({
         title: 'Listings Update Service',
-        price: 45,
-        priceId: PriceId.LISTING_UPDATE_SERVICE,
+        price: $getPriceMonthlyOrYearly(45, percent),
+        priceId: isMonthly
+          ? PriceId.LISTING_UPDATE_SERVICE_MONTHLY
+          : PriceId.LISTING_UPDATE_SERVICE_YEARLY,
       })
     }
 
     return data
   }
 
-  const getAdditionalContactData = (value: IPlan) => {
+  const getAdditionalContactData = (value: IPlan, isMonthly: boolean) => {
     const data: IAdditionContact[] = []
 
+    const percent = isMonthly ? 0 : 10
+    const priceString = isMonthly ? 'month' : 'year'
+
     if (value.priceId === PriceId.NEWS_LETTER) {
+      const price = $getPriceMonthlyOrYearly(15, percent)
+
       data.push({
-        text: '501-2,500 contacts (+$15/month)',
-        value: 15,
-        priceId: PriceId.CONTACTS_501_2500,
+        text: `501-2,500 contacts (+$${price}/${priceString})`,
+        value: price,
+        priceId: isMonthly ? PriceId.CONTACTS_501_2500_MONTHLY : PriceId.CONTACTS_501_2500_YEARLY,
       })
     }
 
     if (value.priceId !== PriceId.PREMIUM) {
+      const price = $getPriceMonthlyOrYearly(25, percent)
+
       data.push({
-        text: '2,501-5,000 contacts (+$25/month)',
-        value: 25,
-        priceId: PriceId.CONTACTS_2501_5000,
+        text: `2,501-5,000 contacts (+$${price}/${priceString})`,
+        value: price,
+        priceId: isMonthly ? PriceId.CONTACTS_2501_5000_MONTHLY : PriceId.CONTACTS_2501_5000_YEARLY,
       })
     }
 
+    const price = $getPriceMonthlyOrYearly(45, percent)
+
     data.push({
-      text: '5,001-10,000 contacts (+$45/month)',
-      value: 45,
-      priceId: PriceId.CONTACTS_5001_10000,
+      text: `5,001-10,000 contacts (+$${price}/${priceString})`,
+      value: price,
+      priceId: isMonthly ? PriceId.CONTACTS_5001_10000_MONTHLY : PriceId.CONTACTS_5001_10000_YEARLY,
     })
 
     return data
   }
 
-  watch(
-    () => state.selected,
-    (value: IPlan | null) => {
-      if (!value) {
-        return
-      }
+  watch([() => state.selected, () => state.selected?.billingOption], ([value, billingOption]) => {
+    if (!value) {
+      return
+    }
 
-      const addOnsData = getAddOnesData(value)
-      const additionalContactsData = getAdditionalContactData(value)
+    const isMonthly = billingOption === BillingOptions.MONTHLY
 
-      setAddOnsData(addOnsData)
-      setAdditionalContacts(additionalContactsData)
-      setBillingOptions([
-        {
-          label: 'Monthly',
-          value: BillingOptions.MONTHLY,
-        },
-        {
-          label: 'Yearly',
-          value: BillingOptions.YEARLY,
-        },
-      ])
-    },
-  )
+    const addOnsData = getAddOnesData(value, isMonthly)
+    const additionalContactsData = getAdditionalContactData(value, isMonthly)
+
+    setAddOnsData(addOnsData)
+    setAdditionalContacts(additionalContactsData)
+
+    if (value.addOns?.length) {
+      state.selected!.addOns = value.addOns
+        .map(({ title }) => state.addOns.find((item) => item.title === title))
+        .filter((v) => v) as IAddOnsService[]
+    }
+
+    if (value.additionContacts) {
+      state.selected!.additionContacts = state.additionalContacts.find((item) =>
+        item.text.startsWith(value?.additionContacts?.text?.slice(0, 5) || ''),
+      ) as IAdditionContact
+    }
+  })
 
   const onAddOnsUpdateHandler = (value: boolean, item: IAddOnsService) => {
     if (!value || !item) {
@@ -134,23 +145,8 @@ export const useHomeView = () => {
     state.selected?.addOns?.push(item)
   }
 
-  const totalAmount: ComputedRef<string> = computed<string>(() => {
-    let sum: number = state.selected?.price || 0
-
-    if (state.selected?.addOns) {
-      sum += state.selected?.addOns.reduce((s, item) => s + item.price, 0)
-    }
-
-    if (state.selected?.additionContacts) {
-      sum += state.selected.additionContacts.value
-    }
-
-    return `$${sum}/month`
-  })
-
   return {
     state,
-    totalAmount,
     onAddOnsUpdateHandler,
     setSelectedPlan,
   }

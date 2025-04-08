@@ -7,7 +7,7 @@
   >
     <div class="font-semibold grow text-xs lg:text-lg" v-text="title" />
     <div class="flex items-center gap-2 lg:gap-3 relative">
-      <span class="font-semibold text-xs lg:text-lg">+${{ price }}/mo</span>
+      <span class="font-semibold text-xs lg:text-lg">+${{ price }}/{{ billingPostfix }}</span>
       <label class="inline-flex items-center cursor-pointer">
         <input type="checkbox" v-model="isMarked" class="invisible absolute" />
         <div
@@ -24,9 +24,11 @@
 </template>
 
 <script setup lang="ts">
-import { type IAddOnsCardProps } from './index.script'
+import { type IAddOnsCardProps, useAddOnsCardComponent } from './index.script'
 
 defineProps<IAddOnsCardProps>()
 
 const isMarked = defineModel()
+
+const { billingPostfix } = useAddOnsCardComponent()
 </script>

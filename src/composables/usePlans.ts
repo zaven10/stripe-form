@@ -1,24 +1,28 @@
-import type {
-  IAddOnsService,
-  IPlan,
-  IUsePlansState,
-  IAdditionContact,
-  IBillingOption,
-} from '@/interfaces'
+import { BillingOptions } from '@/enums'
+
+import type { IAddOnsService, IPlan, IUsePlansState, IAdditionContact } from '@/interfaces'
 
 import { reactive } from 'vue'
 
 const state: IUsePlansState = reactive({
   data: [],
   addOns: [],
-  billingOptions: [],
+  billingOptions: [
+    {
+      label: 'Monthly',
+      value: BillingOptions.MONTHLY,
+    },
+    {
+      label: 'Yearly (Save 10%)',
+      value: BillingOptions.YEARLY,
+    },
+  ],
   additionalContacts: [],
   selected: null,
 })
 
 export const usePlans = () => {
   const setData = (data: IPlan[]) => (state.data = data)
-  const setBillingOptions = (data: IBillingOption[]) => (state.billingOptions = data)
   const setAddOnsData = (data: IAddOnsService[]) => (state.addOns = data)
   const setAdditionalContacts = (data: IAdditionContact[]) => (state.additionalContacts = data)
 
@@ -50,7 +54,6 @@ export const usePlans = () => {
 
   return {
     state,
-    setBillingOptions,
     setAddOnsData,
     removeSelectedPlan,
     setData,
