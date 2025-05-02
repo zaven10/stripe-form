@@ -9,22 +9,18 @@
         <span class="font-semibold text-[10px] sm:text-sm">Choose a Different Plan</span>
       </button>
     </div>
-    <div class="grid gap-1.5 justify-items-start">
-      <div class="inline-flex items-center gap-3 bg-[#f1f1f1] py-0.5 px-5">
-        <span class="font-bold text-lg text-black" v-text="state.selected?.title" />
+    <div class="grid gap-1 justify-items-start bg-[#1d49a6] rounded-lg py-3 px-4">
+      <div class="flex items-center gap-3">
+        <span class="font-bold text-lg text-white" v-text="state.selected?.title" />
         <span class="flex items-baseline gap-1">
-          <h3 class="font-bold text-xl lg:text-2xl text-black">${{ state.selected?.price }}</h3>
-          <span class="text-[#6b7588] text-sm">/month</span>
+          <h3 class="font-bold text-xl lg:text-2xl text-white">${{ state.selected?.price }}</h3>
+          <span class="text-white text-sm font-bold">/ monthly</span>
         </span>
       </div>
       <template v-if="state.selected?.includes?.length">
-        <div
-          v-for="item in state.selected.includes"
-          :key="item"
-          class="ml-3 bg-[#f1f1f1] py-0.5 pl-3 pr-10 inline-flex"
-        >
-          <span v-text="item" class="text-[#6b7588] font-semibold text-xs sm:text-[15px]"></span>
-        </div>
+        <ul v-for="item in state.selected.includes" :key="item" class="list-disc pl-5">
+          <li v-text="item" class="text-[#c0d5ff] text-xs sm:text-[15px] marker:text-white"></li>
+        </ul>
       </template>
     </div>
   </div>

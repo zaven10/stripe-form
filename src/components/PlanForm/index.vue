@@ -1,12 +1,12 @@
 <template>
   <div
     v-if="state.selected"
-    class="container mx-auto grid gap-7 lg:gap-10 max-w-[800px] lg:px-6 lg:pb-10"
+    class="container mx-auto grid gap-7 lg:gap-5 max-w-[800px] lg:px-6 lg:pb-10"
   >
     <plan-form-header />
     <div>
       <section class="grid gap-5 lg:gap-10">
-        <h1 class="text-black font-bold text-2xl lg:text-3xl">Customize Your Plan</h1>
+        <h1 class="text-black font-bold text-2xl lg:text-3xl select-none">Customize Your Plan</h1>
         <div class="grid gap-1 lg:gap-2">
           <h2 class="font-semibold text-sm lg:text-lg">Add More Contacts (Optional)</h2>
           <app-select v-model="state.selected.additionContacts" :items="state.additionalContacts" />
@@ -18,18 +18,11 @@
               v-for="item in state.addOns"
               :key="item.title"
               :title="item.title"
-              :price="item.price"
+              :price="item.price.total"
               @update:modelValue="onAddOnsUpdateHandler($event, item)"
             />
           </div>
         </div>
-        <div v-if="state.billingOptions.length" class="grid gap-1 lg:gap-2">
-          <h2 class="font-semibold text-sm lg:text-lg">Billing Options</h2>
-          <div class="grid gap-3">
-            <app-radio v-model="state.selected.billingOption" :items="state.billingOptions" />
-          </div>
-        </div>
-        <hr class="h-px bg-gray-200 border-0" />
         <div class="grid gap-3">
           <h2 class="font-semibold text-lg">Order Summary</h2>
           <div class="px-5 py-4 bg-[#e6ecf6] rounded-xl grid gap-2.5">
@@ -57,14 +50,31 @@
                   class="flex items-center justify-between text-sm"
                 >
                   <span v-text="item.title" />
-                  <span class="font-semibold">${{ item.price }}/{{ billingPostfix }}</span>
+                  <span class="font-bold">${{ item.price.total }}/{{ billingPostfix }}</span>
                 </li>
               </ul>
             </div>
             <hr class="h-px bg-[#80848a] border-0" />
-            <div class="flex justify-between items-center font-bold text-xl">
-              <span>Total:</span>
-              <span v-text="totalAmount" />
+            <div class="flex justify-between font-bold text-xl">
+              <h2 class="font-semibold text-sm lg:text-lg">Billing Options</h2>
+              <div class="grid gap-3">
+                <app-radio v-model="state.selected.billingOption" :items="state.billingOptions" />
+              </div>
+            </div>
+            <hr class="h-px bg-[#80848a] border-0" />
+            <div>
+              <div v-if="!isMonthly" class="flex justify-between items-center font-bold">
+                <span>Subtotal:</span>
+                <span v-text="amount.subtotal" />
+              </div>
+              <div v-if="!isMonthly" class="flex justify-between items-center font-bold">
+                <span>Yearly Discount:</span>
+                <span>-${{ amount.discount }} (10%) </span>
+              </div>
+              <div class="flex justify-between items-center font-bold">
+                <span>Total:</span>
+                <span v-text="amount.total" />
+              </div>
             </div>
           </div>
         </div>
@@ -88,6 +98,6 @@ import PlanFormHeader from '../../components/PlanFormHeader/index.vue'
 
 import { usePlanFormComponent } from './index.script'
 
-const { state, totalAmount, onAddOnsUpdateHandler, additionalContactsData, billingPostfix } =
+const { state, onAddOnsUpdateHandler, additionalContactsData, billingPostfix, isMonthly, amount } =
   usePlanFormComponent()
 </script>

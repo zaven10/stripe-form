@@ -7,7 +7,7 @@
         :value="item.value"
         class="form-radio ring-[#1d49a6] focus:ring-[#1d49a6] active:ring-[#1d49a6]"
       />
-      <span class="text-sm lg:text-lg" v-text="item.label" />
+      <span class="text-sm" v-text="item.label" />
     </label>
   </div>
 </template>

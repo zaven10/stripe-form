@@ -7,7 +7,7 @@
   >
     <div class="font-semibold grow text-xs lg:text-lg" v-text="title" />
     <div class="flex items-center gap-2 lg:gap-3 relative">
-      <span class="font-semibold text-xs lg:text-lg">+${{ price }}/{{ billingPostfix }}</span>
+      <span class="font-bold text-xs lg:text-lg">+${{ price }}/{{ billingPostfix }}</span>
       <label class="inline-flex items-center cursor-pointer">
         <input type="checkbox" v-model="isMarked" class="invisible absolute" />
         <div

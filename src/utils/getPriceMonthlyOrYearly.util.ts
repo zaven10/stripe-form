@@ -1,6 +1,10 @@
-export const getPriceMonthlyOrYearly = (value: number, percent?: number): number => {
+export const getPriceMonthlyOrYearly = (value: number, percent?: number): any => {
   if (!percent) {
-    return value
+    return {
+      total: value,
+      discount: 0,
+      value,
+    }
   }
 
   if (percent < 0) {
@@ -20,5 +24,9 @@ export const getPriceMonthlyOrYearly = (value: number, percent?: number): number
   const yearlyPrice = value * MONTHS_IN_YEAR
   const discount = (yearlyPrice * percent) / 100
 
-  return yearlyPrice - discount
+  return {
+    total: yearlyPrice - discount,
+    discount,
+    value: yearlyPrice,
+  }
 }

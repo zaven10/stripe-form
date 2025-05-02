@@ -1,3 +1,4 @@
+import { $getPriceMonthlyOrYearly } from '@/utils'
 import { computed, type ComputedRef } from 'vue'
 
 import { usePlans } from '@/composables'
@@ -11,7 +12,7 @@ export const usePlanFormComponent = () => {
 
   const isMonthly = computed(() => state.selected?.billingOption === BillingOptions.MONTHLY)
 
-  const billingPostfix = computed(() => (isMonthly.value ? 'mo' : 'yr'))
+  const billingPostfix = computed(() => (isMonthly.value ? 'monthly' : 'yearly'))
 
   const onAddOnsUpdateHandler = (value: boolean, item: IAddOnsService) => {
     if (!value || !item) {
@@ -27,18 +28,31 @@ export const usePlanFormComponent = () => {
     state.selected?.addOns?.push(item)
   }
 
-  const totalAmount: ComputedRef<string> = computed<string>(() => {
-    let sum: number = state.selected?.price || 0
+  const amount: ComputedRef<any> = computed<any>(() => {
+    let subtotal: number = state.selected?.price || 0
+
+    if (!isMonthly.value) {
+      subtotal *= 12
+    }
 
     if (state.selected?.addOns) {
-      sum += state.selected?.addOns.reduce((s, item) => s + item.price, 0)
+      subtotal += state.selected?.addOns.reduce((s, item) => s + item.price.value, 0)
     }
 
     if (state.selected?.additionContacts) {
-      sum += state.selected.additionContacts.value
+      subtotal += state.selected.additionContacts.price.value
     }
 
-    return `$${sum}/${isMonthly.value ? 'month' : 'year (save 10%)'}`
+    const discount = (subtotal * 10) / 100
+    const total = new Intl.NumberFormat('en-US').format(
+      isMonthly.value ? subtotal : subtotal - discount,
+    )
+
+    return {
+      subtotal: `$${new Intl.NumberFormat('en-US').format(subtotal)}/${isMonthly.value ? 'monthly' : 'yearly'}`,
+      discount: new Intl.NumberFormat('en-US').format(discount),
+      total: `$${total}/${isMonthly.value ? 'monthly' : 'yearly'}`,
+    }
   })
 
   const additionalContactsData = computed(() => {
@@ -54,7 +68,8 @@ export const usePlanFormComponent = () => {
     state,
     billingPostfix,
     additionalContactsData,
-    totalAmount,
+    amount,
+    isMonthly,
     onAddOnsUpdateHandler,
   }
 }

@@ -13,7 +13,7 @@ export const useAddOnsCardComponent = () => {
   const { state } = usePlans()
 
   const billingPostfix = computed(() =>
-    state.selected?.billingOption === BillingOptions.MONTHLY ? 'mo' : 'yr',
+    state.selected?.billingOption === BillingOptions.MONTHLY ? 'monthly' : 'yearly',
   )
 
   return {
