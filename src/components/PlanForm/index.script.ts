@@ -36,11 +36,11 @@ export const usePlanFormComponent = () => {
     }
 
     if (state.selected?.addOns) {
-      subtotal += state.selected?.addOns.reduce((s, item) => s + item.price.value, 0)
+      subtotal += state.selected?.addOns.reduce((s, item) => s + item.price?.value, 0)
     }
 
     if (state.selected?.additionContacts) {
-      subtotal += state.selected.additionContacts.price.value
+      subtotal += state.selected.additionContacts?.price?.value
     }
 
     const discount = (subtotal * 10) / 100
