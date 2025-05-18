@@ -18,7 +18,7 @@
               v-for="item in state.addOns"
               :key="item.title"
               :title="item.title"
-              :price="item.price.total"
+              :price="item.price.value"
               @update:modelValue="onAddOnsUpdateHandler($event, item)"
             />
           </div>
@@ -28,7 +28,7 @@
           <div class="px-5 py-4 bg-[#e6ecf6] rounded-xl grid gap-2.5">
             <div class="flex justify-between items-center">
               <span class="text-md">Selected Plan:</span>
-              <span class="font-semibold" v-text="state.selected.title" />
+              <span class="font-semibold" v-text="selectedPlanTitle" />
             </div>
             <div v-if="state.selected.additionContacts" class="grid gap-2">
               <span>Additional Contacts:</span>
@@ -50,7 +50,7 @@
                   class="flex items-center justify-between text-sm"
                 >
                   <span v-text="item.title" />
-                  <span class="font-bold">${{ item.price.total }}/{{ billingPostfix }}</span>
+                  <span class="font-bold">${{ item.price.value }}/{{ billingPostfix }}</span>
                 </li>
               </ul>
             </div>
@@ -98,6 +98,13 @@ import PlanFormHeader from '../../components/PlanFormHeader/index.vue'
 
 import { usePlanFormComponent } from './index.script'
 
-const { state, onAddOnsUpdateHandler, additionalContactsData, billingPostfix, isMonthly, amount } =
-  usePlanFormComponent()
+const {
+  state,
+  onAddOnsUpdateHandler,
+  additionalContactsData,
+  billingPostfix,
+  isMonthly,
+  amount,
+  selectedPlanTitle,
+} = usePlanFormComponent()
 </script>

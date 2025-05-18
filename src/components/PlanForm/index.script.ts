@@ -59,8 +59,14 @@ export const usePlanFormComponent = () => {
 
     return {
       title: `${text} contacts`,
-      price: state.selected?.additionContacts?.value,
+      price: state.selected?.additionContacts!.price.value,
     }
+  })
+
+  const selectedPlanTitle = computed(() => {
+    const price = isMonthly.value ? state.selected!.price : state.selected!.price * 12
+
+    return `${state?.selected?.title} - $${price}/${billingPostfix.value}`
   })
 
   return {
@@ -69,6 +75,7 @@ export const usePlanFormComponent = () => {
     additionalContactsData,
     amount,
     isMonthly,
+    selectedPlanTitle,
     onAddOnsUpdateHandler,
   }
 }

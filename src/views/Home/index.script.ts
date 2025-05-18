@@ -84,7 +84,7 @@ export const useHomeView = () => {
       const price = $getPriceMonthlyOrYearly(15, percent)
 
       data.push({
-        text: `501-2,500 contacts (+$${price.total}/${priceString})`,
+        text: `501-2,500 contacts (+$${price.value}/${priceString})`,
         value: price.total,
         price,
         priceId: isMonthly ? PriceId.CONTACTS_501_2500_MONTHLY : PriceId.CONTACTS_501_2500_YEARLY,
@@ -95,7 +95,7 @@ export const useHomeView = () => {
       const price = $getPriceMonthlyOrYearly(25, percent)
 
       data.push({
-        text: `2,501-5,000 contacts (+$${price.total}/${priceString})`,
+        text: `2,501-5,000 contacts (+$${price.value}/${priceString})`,
         value: price.total,
         price,
         priceId: isMonthly ? PriceId.CONTACTS_2501_5000_MONTHLY : PriceId.CONTACTS_2501_5000_YEARLY,
@@ -105,7 +105,7 @@ export const useHomeView = () => {
     const price = $getPriceMonthlyOrYearly(45, percent)
 
     data.push({
-      text: `5,001-10,000 contacts (+$${price.total}/${priceString})`,
+      text: `5,001-10,000 contacts (+$${price.value}/${priceString})`,
       value: price.total,
       price,
       priceId: isMonthly ? PriceId.CONTACTS_5001_10000_MONTHLY : PriceId.CONTACTS_5001_10000_YEARLY,
