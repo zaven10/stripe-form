@@ -5,5 +5,5 @@ export interface IPlanSelectionStepProps {
 }
 
 export interface IPlanSelectionStepEmits {
-  'on-select': (plan: IPlan) => void
+  (e: 'on-select', item: IPlan): void;
 }

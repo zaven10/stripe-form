@@ -24,7 +24,7 @@ export const useHomeView = () => {
       billingOption: BillingOptions.MONTHLY,
       priceId: PriceId.ESSENTIAL_MONTHLY,
       product: Product.ESSENTIAL_PLAN,
-      additionContacts: '',
+      additionContacts: null,
       location: '',
       includes: ['Email Newsletter (Up to 500 contacts)'],
     },
