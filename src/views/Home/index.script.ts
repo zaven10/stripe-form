@@ -200,7 +200,7 @@ export const useHomeView = () => {
 
     const discount = state.selected.billingOption === BillingOptions.YEARLY ? PriceId.DISCOUNT : null
 
-    const response = await fetch('https://stripe-form-five.vercel.app/create-checkout-session', {
+    const response = await fetch(`${import.meta.env.VITE_APP_BASE_URL_API}/create-checkout-session`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ lineItems, discount }),
