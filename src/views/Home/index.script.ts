@@ -11,6 +11,8 @@ import { BillingOptions, PriceId, Product } from '@/enums'
 import { $getPriceMonthlyOrYearly } from '@/utils'
 
 
+const BASE_API_URL = import.meta.env.VITE_APP_BASE_URL_API
+
 export const useHomeView = () => {
   const stripePromise = loadStripe(import.meta.env.VITE_APP_STRIPE_PUBLIC_KEY)
 
@@ -200,7 +202,7 @@ export const useHomeView = () => {
 
     const discount = state.selected.billingOption === BillingOptions.YEARLY ? PriceId.DISCOUNT : null
 
-    const response = await fetch(`${import.meta.env.VITE_APP_BASE_URL_API}/create-checkout-session`, {
+    const response = await fetch(`${BASE_API_URL}/create-checkout-session`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ lineItems, discount }),
