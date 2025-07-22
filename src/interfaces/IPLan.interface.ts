@@ -14,5 +14,5 @@ export interface IPlan {
   isSelected?: boolean
   billingOption?: BillingOptions
   addOns: IAddOnsService[] | undefined
-  additionContacts: IAdditionContact | string | null
+  additionContacts: IAdditionContact | any
 }
