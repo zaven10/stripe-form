@@ -7,6 +7,13 @@ import { reactive } from 'vue'
 const state: IUsePlansState = reactive({
   data: [],
   addOns: [],
+  location: '',
+  locations: [
+    { text: 'Calgary, Alberta, Canada', value: 'Calgary' },
+    { text: 'Edmonton, Alberta, Canada', value: 'Edmonton' },
+    { text: 'Vancouver, British Columbia, Canada', value: 'Vancouver' },
+    { text: 'Victoria, British Columbia, Canada', value: 'Victoria' },
+  ],
   billingOptions: [
     {
       label: 'Monthly',
@@ -34,7 +41,8 @@ export const usePlans = () => {
     state.selected = {
       ...value,
       addOns: [],
-      additionContacts: undefined,
+      location: '',
+      additionContacts: '',
     }
   }
 
@@ -46,7 +54,7 @@ export const usePlans = () => {
 
   const setAdditionContact = (value: IAdditionContact | undefined) => {
     if (!value) {
-      return (state.selected!.additionContacts = undefined)
+      return (state.selected!.additionContacts = '')
     }
 
     state.selected!.additionContacts = value

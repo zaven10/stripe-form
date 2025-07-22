@@ -6,6 +6,10 @@ import type { IAddOnsService } from '@/interfaces'
 
 import { BillingOptions } from '@/enums'
 
+export interface IEmits {
+  (e: 'on-payment'): void
+}
+
 export const usePlanFormComponent = () => {
   const { state } = usePlans()
 
@@ -69,6 +73,8 @@ export const usePlanFormComponent = () => {
     return `${state?.selected?.title} - $${price}/${billingPostfix.value}`
   })
 
+  const isDisabled: ComputedRef<boolean> = computed<boolean>(() => !state.selected?.location)
+
   return {
     state,
     billingPostfix,
@@ -76,6 +82,7 @@ export const usePlanFormComponent = () => {
     amount,
     isMonthly,
     selectedPlanTitle,
+    isDisabled,
     onAddOnsUpdateHandler,
   }
 }

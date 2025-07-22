@@ -8,8 +8,23 @@
       <section class="grid gap-5 lg:gap-10">
         <h1 class="text-black font-bold text-2xl lg:text-3xl select-none">Customize Your Plan</h1>
         <div class="grid gap-1 lg:gap-2">
+          <h2 class="font-semibold text-sm lg:text-lg">Select Your Market:</h2>
+          <h4 class="font-light text-xs lg:text-sm">
+            We currently offer our custom real estate email newsletters in the following cities:
+          </h4>
+          <app-select
+            v-model="state.selected.location"
+            :items="state.locations"
+            defaultOption="Choose your city..."
+          />
+        </div>
+        <div class="grid gap-1 lg:gap-2">
           <h2 class="font-semibold text-sm lg:text-lg">Add More Contacts (Optional)</h2>
-          <app-select v-model="state.selected.additionContacts" :items="state.additionalContacts" />
+          <app-select
+            v-model="state.selected.additionContacts"
+            :items="state.additionalContacts"
+            defaultOption="Choose contacts"
+          />
         </div>
         <div v-if="state.addOns.length" class="grid gap-1 lg:gap-2">
           <h2 class="font-semibold text-sm lg:text-lg">Add-On Services (Optional)</h2>
@@ -80,7 +95,9 @@
         </div>
         <div class="flex items-center justify-end">
           <button
-            class="flex items-center gap-2 py-2 px-4 bg-[#1d49a6] rounded-full text-white hover:bg-[#1d49a6]/80 cursor-pointer transition-all"
+            :disabled="isDisabled"
+            class="flex items-center gap-2 py-2 px-4 bg-[#1d49a6] rounded-full text-white hover:bg-[#1d49a6]/80 cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            @click="$emit('on-payment')"
           >
             <span class="font-semibold text-xs lg:text-base">Continue to Payment</span>
           </button>
@@ -96,7 +113,9 @@ import AppSelect from '../../components/AppSelect/index.vue'
 import AppRadio from '../../components/AppRadio/index.vue'
 import PlanFormHeader from '../../components/PlanFormHeader/index.vue'
 
-import { usePlanFormComponent } from './index.script'
+import { usePlanFormComponent, type IEmits } from './index.script'
+
+defineEmits<IEmits>()
 
 const {
   state,
@@ -106,5 +125,6 @@ const {
   isMonthly,
   amount,
   selectedPlanTitle,
+  isDisabled,
 } = usePlanFormComponent()
 </script>

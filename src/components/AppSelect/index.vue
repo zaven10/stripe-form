@@ -4,7 +4,7 @@
       v-model="additionContacts"
       class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2 lg:p-3 pr-10 appearance-none outline-none"
     >
-      <option selected value>Choose contacts</option>
+      <option selected value v-text="defaultOption" />
       <option v-for="item in items" :key="item.value" v-text="item.text" :value="item" />
     </select>
     <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">

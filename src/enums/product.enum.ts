@@ -1,0 +1,5 @@
+export enum Product {
+  ESSENTIAL_PLAN,
+  PROFESSIONAL_PLAN,
+  PREMIUM_PLAN,
+}

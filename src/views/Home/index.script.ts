@@ -1,24 +1,31 @@
 import { watch } from 'vue'
 
+import { loadStripe } from '@stripe/stripe-js'
+
 import { usePlans } from '@/composables'
 
 import type { IAdditionContact, IAddOnsService, IPlan } from '@/interfaces'
 
-import { BillingOptions, PriceId } from '@/enums'
+import { BillingOptions, PriceId, Product } from '@/enums'
 
 import { $getPriceMonthlyOrYearly } from '@/utils'
 
+
 export const useHomeView = () => {
+  const stripePromise = loadStripe(import.meta.env.VITE_APP_STRIPE_PUBLIC_KEY)
+
   const { state, setData, setSelectedPlan, setAddOnsData, setAdditionalContacts } = usePlans()
 
   setData([
     {
-      title: 'Newsletter Package',
+      title: 'Essential Plan',
       price: 55,
       addOns: [],
       billingOption: BillingOptions.MONTHLY,
-      priceId: PriceId.NEWS_LETTER,
-      additionContacts: undefined,
+      priceId: PriceId.ESSENTIAL_MONTHLY,
+      product: Product.ESSENTIAL_PLAN,
+      additionContacts: '',
+      location: '',
       includes: ['Email Newsletter (Up to 500 contacts)'],
     },
     {
@@ -26,18 +33,22 @@ export const useHomeView = () => {
       price: 85,
       isPopular: true,
       billingOption: BillingOptions.MONTHLY,
-      priceId: PriceId.PROFESSIONAL,
+      priceId: PriceId.PROFESSIONAL_MONTHLY,
+      product: Product.PROFESSIONAL_PLAN,
       addOns: [],
-      additionContacts: undefined,
+      additionContacts: '',
+      location: '',
       includes: ['Email Newsletter (Up to 2,500 contacts)', 'Weekly Social Media Reports'],
     },
     {
       title: 'Premium Plan',
       price: 125,
       billingOption: BillingOptions.MONTHLY,
-      priceId: PriceId.PREMIUM,
+      priceId: PriceId.PREMIUM_MONTHLY,
+      product: Product.PREMIUM_PLAN,
       addOns: [],
-      additionContacts: undefined,
+      additionContacts: '',
+      location: '',
       includes: [
         'Email Newsletter (Up to 5,000 contacts)',
         'Weekly Social Media Reports',
@@ -51,7 +62,7 @@ export const useHomeView = () => {
 
     const percent = isMonthly ? 0 : 10
 
-    if (value.priceId === PriceId.NEWS_LETTER) {
+    if ([PriceId.ESSENTIAL_MONTHLY, PriceId.ESSENTIAL_YEARLY].includes(value.priceId)) {
       data.push({
         title: 'Weekly Social Media Reports',
         price: $getPriceMonthlyOrYearly(30, percent),
@@ -61,7 +72,7 @@ export const useHomeView = () => {
       })
     }
 
-    if (value.priceId !== PriceId.PREMIUM) {
+    if (![PriceId.PREMIUM_MONTHLY, PriceId.PREMIUM_YEARLY].includes(value.priceId)) {
       data.push({
         title: 'Listings Update Service',
         price: $getPriceMonthlyOrYearly(45, percent),
@@ -80,7 +91,7 @@ export const useHomeView = () => {
     const percent = isMonthly ? 0 : 10
     const priceString = isMonthly ? 'monthly' : 'yearly'
 
-    if (value.priceId === PriceId.NEWS_LETTER) {
+    if ([PriceId.ESSENTIAL_MONTHLY, PriceId.ESSENTIAL_YEARLY].includes(value.priceId)) {
       const price = $getPriceMonthlyOrYearly(15, percent)
 
       data.push({
@@ -91,7 +102,7 @@ export const useHomeView = () => {
       })
     }
 
-    if (value.priceId !== PriceId.PREMIUM) {
+    if (![PriceId.PREMIUM_MONTHLY, PriceId.PREMIUM_YEARLY].includes(value.priceId)) {
       const price = $getPriceMonthlyOrYearly(25, percent)
 
       data.push({
@@ -121,6 +132,20 @@ export const useHomeView = () => {
 
     const isMonthly = billingOption === BillingOptions.MONTHLY
 
+    switch (state.selected!.product) {
+      case Product.ESSENTIAL_PLAN:
+        state.selected!.priceId = isMonthly ? PriceId.ESSENTIAL_MONTHLY : PriceId.ESSENTIAL_YEARLY
+        break
+      case Product.PREMIUM_PLAN:
+        state.selected!.priceId = isMonthly ? PriceId.PREMIUM_MONTHLY : PriceId.PREMIUM_YEARLY
+        break
+      case Product.PROFESSIONAL_PLAN:
+        state.selected!.priceId = isMonthly
+          ? PriceId.PROFESSIONAL_MONTHLY
+          : PriceId.PROFESSIONAL_YEARLY
+        break
+    }
+
     const addOnsData = getAddOnesData(value, isMonthly)
     const additionalContactsData = getAdditionalContactData(value, isMonthly)
 
@@ -148,9 +173,52 @@ export const useHomeView = () => {
     state.selected?.addOns?.push(item)
   }
 
+  const onPaymentHandler = async () => {
+    if (!state.selected?.location) {
+      return
+    }
+
+    const stripe: any = await stripePromise
+
+    const lineItems = [{ price: state.selected?.priceId, quantity: 1 }]
+
+    if (state.selected?.additionContacts) {
+      lineItems.push({
+        price: state.selected?.additionContacts?.priceId,
+        quantity: 1,
+      })
+    }
+
+    if (state.selected?.addOns?.length) {
+      state.selected?.addOns.forEach((item) => {
+        lineItems.push({
+          price: item.priceId,
+          quantity: 1,
+        })
+      })
+    }
+
+    const discount = state.selected.billingOption === BillingOptions.YEARLY ? PriceId.DISCOUNT : null
+
+    const response = await fetch('http://localhost:4242/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lineItems, discount }),
+    })
+
+    try {
+      const { id } = await response.json()
+
+      stripe.redirectToCheckout({ sessionId: id })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   return {
     state,
     onAddOnsUpdateHandler,
     setSelectedPlan,
+    onPaymentHandler,
   }
 }
