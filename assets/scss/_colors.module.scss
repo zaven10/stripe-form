@@ -1,0 +1,18 @@
+$colors: (
+  appPrimary: #1d49a6,
+  appBackgroundPage: #f8fafc,
+  appDarkText: #030816,
+  appLightText: #667489,
+  appLightGray: #f3f5f9,
+  appLightGray2: #cecfd3,
+  appLightGray3: #f6f8fe,
+  appDividerGray: #80848a,
+  appSilver: #e6ecf6,
+  appLightBlue: #c0d5ff,
+);
+
+:export {
+  @each $key, $value in $colors {
+    #{$key}: $value;
+  }
+}
