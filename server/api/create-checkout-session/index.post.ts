@@ -21,7 +21,30 @@ export default defineEventHandler(async (event) => {
     line_items: lineItems,
     discounts,
     success_url: `${appUrl}/success`,
-    cancel_url: `${appUrl}/cancel`,
+    cancel_url: appUrl,
+    automatic_tax: {
+      enabled: true,
+    },
+    custom_fields: [
+      {
+        key: 'brokerage_name',
+        label: {
+          type: 'custom',
+          custom: 'Real Estate Brokerage Name',
+        },
+        type: 'text',
+        optional: true,
+      },
+      {
+        key: 'agent_team_name',
+        label: {
+          type: 'custom',
+          custom: 'Agent or Team Name',
+        },
+        type: 'text',
+        optional: true,
+      },
+    ],
   })
 
   return { id: session.id }
