@@ -4,6 +4,8 @@ import type { IAddOnsService } from './IAddOnsService.interface'
 import type { IAdditionContact } from './IAdditionContact.interface'
 import type { IBillingOption } from './IBillingOption.interface'
 import type { ILocation } from './ILocation.interface'
+import type { IMenuItem } from './IMenuItem.interface'
+import type { ISocialLinkItem } from './ISocialLinkItem.interface'
 
 export type {
   IPlan,
@@ -12,4 +14,6 @@ export type {
   IAdditionContact,
   IBillingOption,
   ILocation,
+  IMenuItem,
+  ISocialLinkItem,
 }

@@ -8,6 +8,7 @@ import viteConfig from './vite.config'
 import svgoConfig from './svgo.config'
 import runtimeConfig from './runtime.config'
 import stripeConfig from './stripe.config'
+import headConfig from './head.config'
 
 export {
   modulesConfig,
@@ -20,4 +21,5 @@ export {
   svgoConfig,
   runtimeConfig,
   stripeConfig,
+  headConfig,
 }

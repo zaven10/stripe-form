@@ -13,9 +13,13 @@ import {
   svgoConfig,
   runtimeConfig,
   stripeConfig,
+  headConfig,
 } from './configs'
 
 export default defineNuxtConfig({
+  app: {
+    head: headConfig,
+  },
   css: cssConfig,
   modules: modulesConfig,
   imports: importsConfig,

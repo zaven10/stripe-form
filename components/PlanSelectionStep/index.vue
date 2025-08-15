@@ -1,5 +1,5 @@
 <template>
-  <the-header
+  <title-section
     title="Choose Your Newsletter Plan"
     subtitle="All plans include a personalized, professionally designed monthly email newsletter tailored to your city."
   />
@@ -15,6 +15,12 @@
       @on-select="$emit('on-select', item)"
     />
   </section>
+
+  <title-section
+    title="Try Your First Newsletter Risk-Free"
+    subtitle="Create your account, send your first market update, and see the results for yourself. If it’s not exactly what you hoped for, we’ll provide a full refund - simple as that."
+    class="[&>h1]:text-app-primary [&>h1]:text-3xl lg:w-[45rem] [&>span]:text-app-dark-text"
+  />
 </template>
 
 <script lang="ts" setup>
